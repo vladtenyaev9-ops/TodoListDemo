@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="/main.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <!doctype html>
+    <html lang="ru">
+      <head>
+        <meta charset="utf-8" />
+        <title>Task Manager — Tasks</title>
+        <script src="./support.js"></script>
+      </head>
+      <body>
+        <x-dc>
+          <helmet>
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link
+              href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+              rel="stylesheet"
+            />
+            <style>
+              body {
+                margin: 0;
+              }
+              * {
+                box-sizing: border-box;
+              }
+              .app {
+                display: flex;
+                min-height: 900px;
+                width: 100%;
+                background: #f6f6f4;
+                color: #16161a;
+                font-family: "Manrope", "Helvetica Neue", Arial, sans-serif;
+                font-size: 14px;
+              }
+              .side {
+                width: 232px;
+                flex: none;
+                padding: 28px 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 28px;
+                border-right: 1px solid #e7e7e3;
+                background: #fbfbfa;
+              }
+              .logo {
+                font-weight: 800;
+                font-size: 18px;
+                letter-spacing: -0.02em;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+              }
+              .logo i {
+                width: 26px;
+                height: 26px;
+                border-radius: 8px;
+                background: #16161a;
+                display: block;
+              }
+              .sfield {
+                height: 38px;
+                border-radius: 10px;
+                border: 1px solid #e7e7e3;
+                background: #fff;
+                padding: 0 12px;
+                font: inherit;
+                color: #16161a;
+                width: 100%;
+              }
+              .nav {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+              }
+              .nav a {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                height: 40px;
+                padding: 0 12px;
+                border-radius: 10px;
+                color: #6b6b76;
+                text-decoration: none;
+                font-weight: 600;
+              }
+              .nav a:hover {
+                background: #f0f0ec;
+                color: #16161a;
+              }
+              .nav a.on {
+                background: #edede8;
+                color: #16161a;
+              }
+              .ico {
+                width: 18px;
+                height: 18px;
+                fill: none;
+                stroke: currentColor;
+                stroke-width: 1.7;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                flex: none;
+              }
+              .main {
+                flex: 1;
+                min-width: 0;
+                padding: 32px 40px 40px;
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+              }
+              .top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+                flex-wrap: wrap;
+              }
+              h1 {
+                margin: 0;
+                font-size: 30px;
+                font-weight: 800;
+                letter-spacing: -0.03em;
+              }
+              .sub {
+                color: #6b6b76;
+                margin-top: 4px;
+              }
+              .actions {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+              }
+              .tabs {
+                display: flex;
+                gap: 4px;
+                border-bottom: 1px solid #e7e7e3;
+                flex-wrap: wrap;
+                align-items: center;
+              }
+              .tab {
+                padding: 12px 14px;
+                color: #6b6b76;
+                font-weight: 600;
+                text-decoration: none;
+                border-bottom: 2px solid transparent;
+                margin-bottom: -1px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+              }
+              .tab:hover {
+                color: #16161a;
+              }
+              .tab.on {
+                color: #16161a;
+                border-bottom-color: #16161a;
+              }
+              .dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                display: block;
+              }
+              .cta {
+                height: 40px;
+                padding: 0 18px;
+                border-radius: 10px;
+                border: 0;
+                background: #16161a;
+                color: #fff;
+                font: inherit;
+                font-weight: 700;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+              }
+              .board {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+                gap: 20px;
+                align-items: start;
+              }
+              .col {
+                background: #efefeb;
+                border-radius: 16px;
+                padding: 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                min-height: 560px;
+                border-top: 3px solid var(--c);
+              }
+              .chead {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 4px 4px 8px;
+              }
+              .chead b {
+                font-size: 15px;
+                font-weight: 800;
+                letter-spacing: -0.01em;
+              }
+              .cnt {
+                margin-left: auto;
+                min-width: 26px;
+                height: 24px;
+                border-radius: 12px;
+                background: #fff;
+                color: #4a4a55;
+                font-weight: 700;
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 8px;
+              }
+              .card {
+                border-radius: 14px;
+                padding: 16px;
+                border: 1px solid var(--bd);
+                background: var(--bg);
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+              }
+              .card.r {
+                --bg: #fcefed;
+                --bd: #f3cfca;
+                --pill: #f6d5d1;
+                --pt: #9b2c23;
+              }
+              .card.y {
+                --bg: #fdf6e3;
+                --bd: #f1e1b0;
+                --pill: #f5e6b3;
+                --pt: #7a5a06;
+              }
+              .card.g {
+                --bg: #edf6ef;
+                --bd: #cfe4d4;
+                --pill: #cde8d3;
+                --pt: #1f6b3a;
+              }
+              .ctop {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 8px;
+              }
+              .pill {
+                height: 22px;
+                padding: 0 9px;
+                border-radius: 11px;
+                background: var(--pill);
+                color: var(--pt);
+                font-size: 11px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                letter-spacing: 0.02em;
+              }
+              .card h3 {
+                margin: 0;
+                font-size: 16px;
+                font-weight: 700;
+                letter-spacing: -0.01em;
+                line-height: 1.3;
+              }
+              .card p {
+                margin: 0;
+                color: #4a4a55;
+                line-height: 1.5;
+              }
+              .meta {
+                display: flex;
+                gap: 16px;
+                flex-wrap: wrap;
+                padding-top: 10px;
+                border-top: 1px solid rgba(22, 22, 26, 0.08);
+              }
+              .meta div {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                font-size: 12px;
+                color: #6b6b76;
+              }
+              .meta b {
+                font-size: 13px;
+                color: #16161a;
+                font-weight: 600;
+              }
+              .btns {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+              }
+              .b {
+                height: 34px;
+                padding: 0 14px;
+                border-radius: 9px;
+                border: 1px solid transparent;
+                font: inherit;
+                font-weight: 700;
+                font-size: 13px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+              }
+              .b.p {
+                background: #16161a;
+                color: #fff;
+              }
+              .b.s {
+                background: rgba(255, 255, 255, 0.7);
+                border-color: rgba(22, 22, 26, 0.12);
+                color: #16161a;
+              }
+              .b.d {
+                background: transparent;
+                color: #9b2c23;
+                margin-left: auto;
+              }
+              .b:hover {
+                filter: brightness(0.96);
+              }
+              .card.done h3 {
+                text-decoration: line-through;
+                text-decoration-color: rgba(22, 22, 26, 0.35);
+              }
+              @media (max-width: 760px) {
+                .app {
+                  flex-direction: column;
+                }
+                .side {
+                  width: 100%;
+                  border-right: 0;
+                  border-bottom: 1px solid #e7e7e3;
+                }
+                .main {
+                  padding: 24px 16px;
+                }
+              }
+            </style>
+          </helmet>
+
+          <div class="app">
+            <aside class="side">
+              <div class="logo"><i></i>Task manager</div>
+              <input
+                class="sfield"
+                type="text"
+                placeholder="Search.."
+                aria-label="Search"
+              />
+              <nav class="nav" aria-label="Main">
+                <a href="#"
+                  ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 11l9-8 9 8M5 10v10h14V10" /></svg
+                  >Home</a
+                >
+                <a href="#" class="on"
+                  ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+                    /></svg
+                  >Folders</a
+                >
+                <a href="#"
+                  ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 3h12v18l-6-4-6 4z" /></svg
+                  >Marks</a
+                >
+                <a href="#"
+                  ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="9" cy="8" r="3.5" />
+                    <path
+                      d="M2.5 20c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6M16 4.5a3.5 3.5 0 010 7M18 14c2 .6 3.5 2.5 3.5 6"
+                    /></svg
+                  >Team</a
+                >
+                <a href="#"
+                  ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="5" r="2.5" />
+                    <path
+                      d="M12 8v4M5 16v-2h14v2M5 16a2 2 0 100 4 2 2 0 000-4zM12 12v4M12 16a2 2 0 100 4 2 2 0 000-4zM19 16a2 2 0 100 4 2 2 0 000-4z"
+                    /></svg
+                  >Group</a
+                >
+              </nav>
+            </aside>
+
+            <main class="main">
+              <div class="top">
+                <div>
+                  <h1>Dashboard</h1>
+                  <div class="sub">7 задач · 3 в работе или ожидании</div>
+                </div>
+                <div class="actions">
+                  <button class="cta" type="button">
+                    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 5v14M5 12h14" /></svg
+                    >Create
+                  </button>
+                </div>
+              </div>
+
+              <div class="tabs">
+                <a class="tab" href="#">Overview</a>
+                <a class="tab on" href="#">Tasks</a>
+                <a class="tab" href="#">Documents</a>
+                <a class="tab" href="#"
+                  ><i class="dot" style="background: #d9534a"></i>High</a
+                >
+                <a class="tab" href="#"
+                  ><i class="dot" style="background: #e0a81b"></i>Middle</a
+                >
+                <a class="tab" href="#"
+                  ><i class="dot" style="background: #3f9b5f"></i>Low</a
+                >
+              </div>
+
+              <div class="board">
+                <section class="col" style="--c: #64748b">
+                  <div class="chead">
+                    <i class="dot" style="background: #64748b"></i><b>Todo</b
+                    ><span class="cnt">3</span>
+                  </div>
+
+                  <article class="card r">
+                    <div class="ctop"><span class="pill">HIGH</span></div>
+                    <h3>Подготовить релиз 2.4</h3>
+                    <p>
+                      Собрать changelog, проверить сборку и выложить на тестовый
+                      сервер.
+                    </p>
+                    <div class="meta">
+                      <div>Created<b>15 окт 2026</b></div>
+                      <div>Deadline<b>17 окт 2026</b></div>
+                    </div>
+                    <div class="btns">
+                      <button class="b p" type="button">
+                        <svg
+                          class="ico"
+                          style="width: 14px; height: 14px"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path d="M7 4l12 8-12 8z" /></svg
+                        >Start</button
+                      ><button class="b s" type="button">Edit</button
+                      ><button class="b d" type="button">Delete</button>
+                    </div>
+                  </article>
+
+                  <article class="card y">
+                    <div class="ctop"><span class="pill">MIDDLE</span></div>
+                    <h3>Обновить документацию API</h3>
+                    <p>Добавить примеры запросов для новых эндпоинтов.</p>
+                    <div class="meta">
+                      <div>Created<b>14 окт 2026</b></div>
+                      <div>Deadline<b>22 окт 2026</b></div>
+                    </div>
+                    <div class="btns">
+                      <button class="b p" type="button">
+                        <svg
+                          class="ico"
+                          style="width: 14px; height: 14px"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path d="M7 4l12 8-12 8z" /></svg
+                        >Start</button
+                      ><button class="b s" type="button">Edit</button
+                      ><button class="b d" type="button">Delete</button>
+                    </div>
+                  </article>
+
+                  <article class="card g">
+                    <div class="ctop"><span class="pill">LOW</span></div>
+                    <h3>Разобрать старые заметки</h3>
+                    <p>Удалить дубли и перенести важное в папку «Архив».</p>
+                    <div class="meta">
+                      <div>Created<b>12 окт 2026</b></div>
+                      <div>Deadline<b>30 окт 2026</b></div>
+                    </div>
+                    <div class="btns">
+                      <button class="b p" type="button">
+                        <svg
+                          class="ico"
+                          style="width: 14px; height: 14px"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path d="M7 4l12 8-12 8z" /></svg
+                        >Start</button
+                      ><button class="b s" type="button">Edit</button
+                      ><button class="b d" type="button">Delete</button>
+                    </div>
+                  </article>
+                </section>
+
+                <section class="col" style="--c: #3b6ff5">
+                  <div class="chead">
+                    <i class="dot" style="background: #3b6ff5"></i
+                    ><b>In progress</b><span class="cnt">2</span>
+                  </div>
+
+                  <article class="card y">
+                    <div class="ctop"><span class="pill">MIDDLE</span></div>
+                    <h3>Дизайн страницы профиля</h3>
+                    <p>
+                      Согласовать макеты с командой и подготовить передачу в
+                      разработку.
+                    </p>
+                    <div class="meta">
+                      <div>Created<b>10 окт 2026</b></div>
+                      <div>Deadline<b>20 окт 2026</b></div>
+                    </div>
+                    <div class="btns">
+                      <button class="b p" type="button">
+                        <svg
+                          class="ico"
+                          style="width: 14px; height: 14px"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path d="M5 12l5 5 9-10" /></svg
+                        >Complete</button
+                      ><button class="b s" type="button">Edit</button
+                      ><button class="b d" type="button">Delete</button>
+                    </div>
+                  </article>
+
+                  <article class="card r">
+                    <div class="ctop"><span class="pill">HIGH</span></div>
+                    <h3>Исправить ошибку авторизации</h3>
+                    <p>Пользователи вылетают после обновления токена.</p>
+                    <div class="meta">
+                      <div>Created<b>13 окт 2026</b></div>
+                      <div>Deadline<b>16 окт 2026</b></div>
+                    </div>
+                    <div class="btns">
+                      <button class="b p" type="button">
+                        <svg
+                          class="ico"
+                          style="width: 14px; height: 14px"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path d="M5 12l5 5 9-10" /></svg
+                        >Complete</button
+                      ><button class="b s" type="button">Edit</button
+                      ><button class="b d" type="button">Delete</button>
+                    </div>
+                  </article>
+                </section>
+
+                <section class="col" style="--c: #8b5cf6">
+                  <div class="chead">
+                    <i class="dot" style="background: #8b5cf6"></i><b>Done</b
+                    ><span class="cnt">2</span>
+                  </div>
+
+                  <article class="card g done">
+                    <div class="ctop"><span class="pill">LOW</span></div>
+                    <h3>Настроить рабочее окружение</h3>
+                    <p>Установить зависимости и проверить локальный запуск.</p>
+                    <div class="meta">
+                      <div>Created<b>5 окт 2026</b></div>
+                      <div>Deadline<b>8 окт 2026</b></div>
+                    </div>
+                    <div class="btns">
+                      <button class="b s" type="button">Edit</button
+                      ><button class="b d" type="button">Delete</button>
+                    </div>
+                  </article>
+
+                  <article class="card g done">
+                    <div class="ctop"><span class="pill">LOW</span></div>
+                    <h3>Заказать визитки команды</h3>
+                    <p>Утвердить макет и отправить в печать.</p>
+                    <div class="meta">
+                      <div>Created<b>3 окт 2026</b></div>
+                      <div>Deadline<b>9 окт 2026</b></div>
+                    </div>
+                    <div class="btns">
+                      <button class="b s" type="button">Edit</button
+                      ><button class="b d" type="button">Delete</button>
+                    </div>
+                  </article>
+                </section>
+              </div>
+            </main>
+          </div>
+        </x-dc>
+        <script
+          type="text/x-dc"
+          data-dc-script
+          data-props='{"$preview":{"width":1440,"height":900}}'
+        >
+          class Component extends DCLogic {
+          renderVals() {
+          return {};
+          }
+          }
+        </script>
+      </body>
+    </html>
+  </body>
+</html>
